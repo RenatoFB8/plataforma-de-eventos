@@ -14,6 +14,8 @@ export default {
         extend: {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                aclonica: ['Aclonica', 'sans-serif'],
+                actor: ['Actor', 'sans-serif'],
             },
         },
     },
