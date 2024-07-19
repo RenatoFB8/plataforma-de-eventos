@@ -17,7 +17,14 @@ use Inertia\Inertia;
 |
 */
 
-Route::resource("event", EventController::class);
+Route::resource('event', EventController::class)
+    ->only(['create', 'store', 'edit', 'update', 'destroy'])
+    ->middleware('auth');
+
+Route::resource('event', EventController::class)
+    ->except(['create', 'store', 'edit', 'update', 'destroy']);
+
+Route::post('/create/store', [EventController::class, 'store']);
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -38,4 +45,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
