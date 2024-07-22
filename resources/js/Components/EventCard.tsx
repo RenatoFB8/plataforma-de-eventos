@@ -8,6 +8,7 @@ interface EventCardProps {
         title: string;
         start_date: string;
         main_image: string;
+        location: { city: string; state: string };
     };
 }
 
@@ -52,7 +53,7 @@ export default function EventCard({ event }: EventCardProps) {
                 </div>
                 <div className="flex items-center gap-1 pl-4">
                     <MapPin className="w-6" />
-                    <p>Recife - PE</p>
+                    <p>{event.location.city} - {event.location.state}</p>
                 </div>
             </div>
         </div>

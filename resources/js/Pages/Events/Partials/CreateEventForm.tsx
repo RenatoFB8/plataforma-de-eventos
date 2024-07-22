@@ -4,6 +4,7 @@ import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
 import InputError from "@/Components/InputError";
 import PrimaryButton from "@/Components/PrimaryButton";
+import axios from "axios";
 
 interface CreateEventFormData {
     title: string;
@@ -14,6 +15,12 @@ interface CreateEventFormData {
     entry_price: number | string;
     main_image: File | null;
     location_images: File[];
+    street: string;
+    street_number: string;
+    city: string;
+    neighborhood: string;
+    state: string;
+    cep: string;
 }
 
 const MAX_LOCATION_IMAGES = 6;
@@ -29,6 +36,12 @@ const CreateEventForm: React.FC = () => {
             entry_price: "",
             main_image: null,
             location_images: [],
+            street: "",
+            street_number: "",
+            city: "",
+            neighborhood: "",
+            state: "",
+            cep: "",
         });
 
     const [mainImagePreview, setMainImagePreview] = useState<string | null>(
@@ -42,7 +55,7 @@ const CreateEventForm: React.FC = () => {
         const file = e.target.files ? e.target.files[0] : null;
         setData("main_image", file);
         setMainImagePreview(file ? URL.createObjectURL(file) : null);
-        e.target.value = ""
+        e.target.value = "";
     };
 
     const handleLocationImagesChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -55,7 +68,7 @@ const CreateEventForm: React.FC = () => {
         setLocationImagePreviews(
             updatedFiles.map((file) => URL.createObjectURL(file))
         );
-        e.target.value = ""
+        e.target.value = "";
     };
 
     const handleRemoveMainImage = () => {
@@ -70,6 +83,34 @@ const CreateEventForm: React.FC = () => {
         setLocationImagePreviews(
             updatedFiles.map((file) => URL.createObjectURL(file))
         );
+    };
+
+    const fetchAddressByCep = async (cep: string) => {
+        try {
+            const response = await axios.get(
+                `https://viacep.com.br/ws/${cep}/json/`
+            );
+            const address = response.data;
+            setData((prevData) => ({
+                ...prevData,
+                street: address.logradouro,
+                neighborhood: address.bairro,
+                city: address.localidade,
+                state: address.uf,
+            }));
+        } catch (error) {
+            console.error("Erro ao buscar o endereço:", error);
+        }
+    };
+
+    const handleCepChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const cep = e.target.value;
+        const filteredCep = cep.replaceAll("-", "");
+        setData("cep", filteredCep);
+
+        if (filteredCep.length === 8) {
+            fetchAddressByCep(filteredCep);
+        }
     };
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -215,6 +256,84 @@ const CreateEventForm: React.FC = () => {
                     ))}
                 </div>
                 <InputError message={errors.location_images} className="mt-2" />
+            </div>
+
+            <div>
+                <InputLabel htmlFor="cep" value="CEP" />
+                <TextInput
+                    id="cep"
+                    type="text"
+                    className="mt-1 block w-full"
+                    value={data.cep}
+                    onChange={handleCepChange}
+                    required
+                />
+                <InputError message={errors.cep} className="mt-2" />
+            </div>
+
+            <div>
+                <InputLabel htmlFor="street" value="Rua" />
+                <TextInput
+                    id="street"
+                    type="text"
+                    className="mt-1 block w-full"
+                    value={data.street}
+                    onChange={(e) => setData("street", e.target.value)}
+                    required
+                />
+                <InputError message={errors.street} className="mt-2" />
+            </div>
+
+            <div>
+                <InputLabel htmlFor="street_number" value="Número da rua" />
+                <TextInput
+                    id="street_number"
+                    type="text"
+                    className="mt-1 block w-full"
+                    value={data.street_number}
+                    onChange={(e) => setData("street_number", e.target.value)}
+                    required
+                />
+                <InputError message={errors.street_number} className="mt-2" />
+            </div>
+
+            <div>
+                <InputLabel htmlFor="neighborhood" value="Bairro" />
+                <TextInput
+                    id="neighborhood"
+                    type="text"
+                    className="mt-1 block w-full"
+                    value={data.neighborhood}
+                    onChange={(e) => setData("neighborhood", e.target.value)}
+                    required
+                />
+                <InputError message={errors.neighborhood} className="mt-2" />
+            </div>
+
+            <div>
+                <InputLabel htmlFor="city" value="Cidade" />
+                <TextInput
+                    id="city"
+                    type="text"
+                    className="mt-1 block w-full"
+                    value={data.city}
+                    onChange={(e) => setData("city", e.target.value)}
+                    required
+                />
+                <InputError message={errors.city} className="mt-2" />
+            </div>
+
+            <div>
+                <InputLabel htmlFor="state" value="Estado" />
+                <TextInput
+                    id="state"
+                    type="text"
+                    className="mt-1 block w-full"
+                    value={data.state}
+                    onChange={(e) => setData("state", e.target.value)}
+                    required
+                />
+                <InputError message={errors.state} className="mt-2" />
             </div>
 
             <PrimaryButton disabled={processing}>Criar Evento</PrimaryButton>
