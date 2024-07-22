@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use App\Models\Location;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -13,7 +14,7 @@ class EventController extends Controller
      */
     public function index()
     {
-        $events = Event::paginate(4);
+        $events = Event::with('location')->paginate(4);
 
         return Inertia::render('Welcome', [
             'events' => $events,
@@ -43,10 +44,16 @@ class EventController extends Controller
             'main_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'location_images' => 'array|max:6',
             'location_images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'street' => 'required|string|max:255',
+            'street_number' => 'required|string',
+            'city' => 'required|string|max:255',
+            'neighborhood' => 'required|string|max:255',
+            'state' => 'required|string|max:2',
+            'cep' => 'required|string|max:8',
         ]);
 
         $mainImagePath = $request->file('main_image')->store('images', 'public');
-        
+
         $locationImagesPaths = [];
 
         if ($request->has('location_images')) {
@@ -54,6 +61,15 @@ class EventController extends Controller
                 $locationImagesPaths[] = $image->store('images', 'public');
             }
         }
+
+        $location = Location::create([
+            'street' => $request->street,
+            'street_number' => $request->street_number,
+            'city' => $request->city,
+            'neighborhood' => $request->neighborhood,
+            'state' => $request->state,
+            'cep' => $request->cep,
+        ]);
 
         $event = Event::create([
             'title' => $request->title,
@@ -64,6 +80,7 @@ class EventController extends Controller
             'entry_price' => $request->entry_price,
             'main_image' => $mainImagePath,
             'location_images' => $locationImagesPaths,
+            'location_id' => $location->id,
             'user_id' => auth()->id(),
         ]);
 
