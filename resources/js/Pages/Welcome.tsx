@@ -14,6 +14,7 @@ interface PaginatedEvents {
         title: string;
         start_date: string;
         main_image: string;
+        location: { city: string; state: string };
     }[];
     prev_page_url: string;
     current_page: number;
