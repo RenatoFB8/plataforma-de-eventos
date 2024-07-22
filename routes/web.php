@@ -17,24 +17,20 @@ use Inertia\Inertia;
 |
 */
 
-Route::resource('event', EventController::class)
-    ->only(['create', 'store', 'edit', 'update', 'destroy'])
-    ->middleware('auth');
-
-Route::resource('event', EventController::class)
-    ->except(['create', 'store', 'edit', 'update', 'destroy']);
-
-Route::post('/create/store', [EventController::class, 'store']);
-
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+// Rotas de eventos com autenticação
+Route::middleware('auth')->group(function () {
+    Route::get('event/create', [EventController::class, 'create'])->name('event.create');
+    Route::post('event', [EventController::class, 'store'])->name('event.store');
+    Route::get('event/{event}/edit', [EventController::class, 'edit'])->name('event.edit');
+    Route::put('event/{event}', [EventController::class, 'update'])->name('event.update');
+    Route::delete('event/{event}', [EventController::class, 'destroy'])->name('event.destroy');
 });
 
+// Rotas de eventos sem autenticação
+Route::get('event/{event}', [EventController::class, 'show'])->name('event.show');
+Route::get('/', [EventController::class, 'index'])->name('event.index');
+
+// Outras rotas
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');

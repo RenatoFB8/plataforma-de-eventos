@@ -13,7 +13,11 @@ class EventController extends Controller
      */
     public function index()
     {
-        //
+        $events = Event::paginate(4);
+
+        return Inertia::render('Welcome', [
+            'events' => $events,
+        ]);
     }
 
     /**
@@ -42,6 +46,7 @@ class EventController extends Controller
         ]);
 
         $mainImagePath = $request->file('main_image')->store('images', 'public');
+        
         $locationImagesPaths = [];
 
         if ($request->has('location_images')) {
@@ -62,7 +67,7 @@ class EventController extends Controller
             'user_id' => auth()->id(),
         ]);
 
-        return redirect()->route('events.index');
+        return redirect()->route('event.index');
     }
 
     /**
