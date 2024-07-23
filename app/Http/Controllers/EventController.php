@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreEventRequest;
 use App\Models\Event;
 use App\Models\Location;
 use Illuminate\Http\Request;
@@ -32,26 +33,8 @@ class EventController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreEventRequest $request)
     {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date',
-            'max_participants' => 'required|integer',
-            'entry_price' => 'required|numeric',
-            'main_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'location_images' => 'array|max:6',
-            'location_images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            'street' => 'required|string|max:255',
-            'street_number' => 'required|string',
-            'city' => 'required|string|max:255',
-            'neighborhood' => 'required|string|max:255',
-            'state' => 'required|string|max:2',
-            'cep' => 'required|string|max:8',
-        ]);
-
         $mainImagePath = $request->file('main_image')->store('images', 'public');
 
         $locationImagesPaths = [];
@@ -92,9 +75,12 @@ class EventController extends Controller
      */
     public function show(Event $event)
     {
-        //
-    }
+        $event->load('location');
 
+        return Inertia::render('Events/Show', [
+            'event' => $event,
+        ]);
+    }
     /**
      * Show the form for editing the specified resource.
      */

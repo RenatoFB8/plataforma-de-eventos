@@ -7,6 +7,7 @@ interface EventCardProps {
         id: number;
         title: string;
         start_date: string;
+        end_date: string;
         main_image: string;
         location: { city: string; state: string };
     };
@@ -26,6 +27,10 @@ export default function EventCard({ event }: EventCardProps) {
         .toLocaleString("pt-BR", dateOptions)
         .replaceAll(",", "");
 
+    const endDate = new Date(event.end_date);
+
+    const hasEnded = new Date() > endDate;
+
     const truncateTitle = (title: string, maxLength: number) => {
         return title.length > maxLength
             ? title.substring(0, maxLength) + "..."
@@ -33,7 +38,10 @@ export default function EventCard({ event }: EventCardProps) {
     };
 
     return (
-        <div className={`w-60`}>
+        <Link
+            href={`/event/${event.id}`}
+            className={`w-60`}
+        >
             <div className="h-28 w-full overflow-hidden rounded-t-lg">
                 <img
                     src={"/storage/" + event.main_image}
@@ -53,9 +61,11 @@ export default function EventCard({ event }: EventCardProps) {
                 </div>
                 <div className="flex items-center gap-1 pl-4">
                     <MapPin className="w-6" />
-                    <p>{event.location.city} - {event.location.state}</p>
+                    <p>
+                        {event.location.city} - {event.location.state}
+                    </p>
                 </div>
             </div>
-        </div>
+        </Link>
     );
 }
