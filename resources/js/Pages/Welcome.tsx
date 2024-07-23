@@ -13,6 +13,7 @@ interface PaginatedEvents {
         id: number;
         title: string;
         start_date: string;
+        end_date: string;
         main_image: string;
         location: { city: string; state: string };
     }[];

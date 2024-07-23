@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -21,6 +20,7 @@ return new class extends Migration
             $table->decimal('entry_price', 8, 2);
             $table->string('main_image');
             $table->json('location_images')->nullable();
+            $table->unsignedInteger('users_count')->default(0);
 
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
 

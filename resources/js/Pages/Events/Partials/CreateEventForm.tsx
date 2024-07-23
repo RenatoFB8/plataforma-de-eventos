@@ -128,7 +128,6 @@ const CreateEventForm: React.FC = () => {
                     className="mt-1 block w-full"
                     value={data.title}
                     onChange={(e) => setData("title", e.target.value)}
-                    required
                 />
                 <InputError message={errors.title} className="mt-2" />
             </div>
@@ -140,7 +139,6 @@ const CreateEventForm: React.FC = () => {
                     className="mt-1 block w-full"
                     value={data.description}
                     onChange={(e) => setData("description", e.target.value)}
-                    required
                 />
                 <InputError message={errors.description} className="mt-2" />
             </div>
@@ -153,7 +151,6 @@ const CreateEventForm: React.FC = () => {
                     className="mt-1 block w-full"
                     value={data.start_date}
                     onChange={(e) => setData("start_date", e.target.value)}
-                    required
                 />
                 <InputError message={errors.start_date} className="mt-2" />
             </div>
@@ -166,7 +163,6 @@ const CreateEventForm: React.FC = () => {
                     className="mt-1 block w-full"
                     value={data.end_date}
                     onChange={(e) => setData("end_date", e.target.value)}
-                    required
                 />
                 <InputError message={errors.end_date} className="mt-2" />
             </div>
@@ -184,7 +180,6 @@ const CreateEventForm: React.FC = () => {
                     onChange={(e) =>
                         setData("max_participants", e.target.value)
                     }
-                    required
                 />
                 <InputError
                     message={errors.max_participants}
@@ -201,7 +196,6 @@ const CreateEventForm: React.FC = () => {
                     className="mt-1 block w-full"
                     value={data.entry_price}
                     onChange={(e) => setData("entry_price", e.target.value)}
-                    required
                 />
                 <InputError message={errors.entry_price} className="mt-2" />
             </div>
@@ -215,7 +209,6 @@ const CreateEventForm: React.FC = () => {
                     className="mt-1 block w-full"
                     onChange={handleMainImageChange}
                     disabled={data.main_image !== null}
-                    required
                 />
                 {mainImagePreview && (
                     <img
@@ -266,7 +259,6 @@ const CreateEventForm: React.FC = () => {
                     className="mt-1 block w-full"
                     value={data.cep}
                     onChange={handleCepChange}
-                    required
                 />
                 <InputError message={errors.cep} className="mt-2" />
             </div>
@@ -279,7 +271,6 @@ const CreateEventForm: React.FC = () => {
                     className="mt-1 block w-full"
                     value={data.street}
                     onChange={(e) => setData("street", e.target.value)}
-                    required
                 />
                 <InputError message={errors.street} className="mt-2" />
             </div>
@@ -292,7 +283,6 @@ const CreateEventForm: React.FC = () => {
                     className="mt-1 block w-full"
                     value={data.street_number}
                     onChange={(e) => setData("street_number", e.target.value)}
-                    required
                 />
                 <InputError message={errors.street_number} className="mt-2" />
             </div>
@@ -305,7 +295,6 @@ const CreateEventForm: React.FC = () => {
                     className="mt-1 block w-full"
                     value={data.neighborhood}
                     onChange={(e) => setData("neighborhood", e.target.value)}
-                    required
                 />
                 <InputError message={errors.neighborhood} className="mt-2" />
             </div>
@@ -318,7 +307,6 @@ const CreateEventForm: React.FC = () => {
                     className="mt-1 block w-full"
                     value={data.city}
                     onChange={(e) => setData("city", e.target.value)}
-                    required
                 />
                 <InputError message={errors.city} className="mt-2" />
             </div>
@@ -331,7 +319,6 @@ const CreateEventForm: React.FC = () => {
                     className="mt-1 block w-full"
                     value={data.state}
                     onChange={(e) => setData("state", e.target.value)}
-                    required
                 />
                 <InputError message={errors.state} className="mt-2" />
             </div>
