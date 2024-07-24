@@ -7,6 +7,7 @@ import DashiconsAirplane from "@/Components/Icons/plane";
 import GameIconsCarousel from "@/Components/Icons/carousel";
 import EventCard from "@/Components/EventCard";
 import { useState } from "react";
+import Authenticated from "@/Layouts/AuthenticatedLayout";
 
 interface PaginatedEvents {
     data: {
@@ -36,31 +37,9 @@ export default function Welcome({ auth, events }: WelcomeProps) {
     };
 
     return (
-        <>
+        <Authenticated user={auth.user}>
             <Head title="Welcome" />
             <div>
-                <div className="flex justify-between p-3">
-                    <div className="ml-6">
-                        <Link
-                            href={route("dashboard")}
-                            className="font-aclonica text-4xl"
-                        >
-                            Laravent
-                        </Link>
-                    </div>
-                    <div className="mr-6 flex items-center gap-4">
-                        {auth.user ? (
-                            <Link href={route("dashboard")}>Dashboard</Link>
-                        ) : (
-                            <>
-                                <Link href={route("login")}>Entrar</Link>
-                                <Link href={route("register")}>
-                                    Cadastre-se
-                                </Link>
-                            </>
-                        )}
-                    </div>
-                </div>
                 <div className="flex flex-col items-center pt-4">
                     <h1 className="font-actor text-3xl m-8">
                         Bem Vindo ao Laravent a sua plataforma de eventos!
@@ -157,6 +136,6 @@ export default function Welcome({ auth, events }: WelcomeProps) {
                     </div>
                 </div>
             </div>
-        </>
+        </Authenticated>
     );
 }
