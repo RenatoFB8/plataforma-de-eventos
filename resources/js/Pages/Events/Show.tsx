@@ -2,6 +2,7 @@ import { Link, Head, useForm, usePage } from "@inertiajs/react";
 import Clock from "@/Components/Icons/Clock";
 import MapPin from "@/Components/Icons/MapPin";
 import PrimaryButton from "@/Components/PrimaryButton";
+import Modal from "@/Components/Modal";
 import { useState, useEffect } from "react";
 
 interface ShowProps {
@@ -23,12 +24,15 @@ interface ShowProps {
             street: string;
             street_number: string;
         };
+        user_id: number;
+        participants: string[];
     };
 }
 
 export default function Show({ auth, event }: ShowProps) {
     const { post, processing, errors } = useForm();
     const [feedbackMessage, setFeedbackMessage] = useState("");
+    const [openParticipantsModal, setOpenParticipantsModal] = useState(false);
 
     const dateOptions: Intl.DateTimeFormatOptions = {
         day: "2-digit",
@@ -156,35 +160,76 @@ export default function Show({ auth, event }: ShowProps) {
                         </div>
                         <div>
                             <div className="bg-gray-300 p-8 font-semibold text-lg rounded-lg">
-                                <h1>Valor de entrada: {event.entry_price}</h1>
-                                <PrimaryButton
-                                    className="mx-auto"
-                                    onClick={handleParticipation}
-                                    disabled={
-                                        isParticipatingDisabled || processing
-                                    }
-                                >
-                                    {isParticipatingDisabled
-                                        ? "Limite atingido"
-                                        : processing
-                                        ? "Processando..."
-                                        : "Participar"}
-                                </PrimaryButton>
+                                {auth.user.id === event.user_id ? (
+                                    <>
+                                        <PrimaryButton
+                                            className="mx-auto"
+                                            onClick={() =>
+                                                setOpenParticipantsModal(true)
+                                            }
+                                        >
+                                            Ver participantes
+                                        </PrimaryButton>
+                                    </>
+                                ) : (
+                                    <>
+                                        <h1>
+                                            Valor de entrada:{" "}
+                                            {event.entry_price}
+                                        </h1>
+                                        <PrimaryButton
+                                            className="mx-auto"
+                                            onClick={handleParticipation}
+                                            disabled={
+                                                isParticipatingDisabled ||
+                                                processing
+                                            }
+                                        >
+                                            {isParticipatingDisabled
+                                                ? "Limite atingido"
+                                                : processing
+                                                ? "Processando..."
+                                                : "Participar"}
+                                        </PrimaryButton>
+                                    </>
+                                )}
                             </div>
                         </div>
                     </div>
 
-                    <div className="bg-gray-300 w-4/5 p-8 flex flex-wrap gap-8 justify-center rounded-lg">
+                    <div className="bg-gray-300 w-4/5 p-8 mb-4 flex flex-wrap gap-8 justify-center rounded-lg">
                         {event.location_images.map((image, index) => (
                             <img
                                 key={index}
                                 src={"/storage/" + image}
-                                className="w-64"
+                                className="w-64 h-40"
                                 alt={`${event.title} location image`}
                             />
                         ))}
                     </div>
                 </section>
+                <Modal show={openParticipantsModal} maxWidth="sm">
+                    <div className="relative w-full">
+                        <button
+                            className="absolute top-2 right-4 text-red-500 font-semibold"
+                            onClick={() => setOpenParticipantsModal(false)}
+                        >
+                            X
+                        </button>
+                        <div className="p-4 h-40 ">
+                            <h1 className="text-1xl font-semibold">
+                                Participantes:
+                            </h1>
+                            <div className="pl-2 h-28 overflow-y-auto">
+                                {event.participants.map(
+                                    (participant, index) => (
+                                        <p key={index}>• {participant}</p>
+                                    )
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </Modal>
             </div>
         </>
     );
