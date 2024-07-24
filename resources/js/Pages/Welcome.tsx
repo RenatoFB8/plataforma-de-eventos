@@ -106,9 +106,18 @@ export default function Welcome({ auth, events }: WelcomeProps) {
                     </h3>
                     <div className="bg-gray-300 h-96 w-11/12 rounded-2xl mt-2 mb-4 flex flex-col justify-center">
                         <div className="flex flex-wrap gap-8 justify-center">
-                            {events.data.map((event) => (
-                                <EventCard event={event} key={event.id} />
-                            ))}
+                            {events.data.length ? (
+                                events.data.map((event) => (
+                                    <EventCard event={event} key={event.id} />
+                                ))
+                            ) : (
+                                <div className="h-36 flex justify-center items-center">
+                                    <h1>
+                                        Crie um evento para ser exibido
+                                        aqui!
+                                    </h1>
+                                </div>
+                            )}
                         </div>
                         <div className="mt-4 flex justify-center">
                             <Link

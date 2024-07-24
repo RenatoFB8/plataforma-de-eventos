@@ -58,9 +58,20 @@ export default function UserEvents({
                     </h1>
                     <div className="bg-gray-300 h-96 w-11/12 rounded-2xl mt-2 mb-4 flex flex-col justify-center">
                         <div className="flex flex-wrap gap-8 justify-center">
-                            {createdEvents.data.map((event) => (
-                                <EventCardOwner event={event} key={event.id} />
-                            ))}
+                            {createdEvents.data.length ? (
+                                createdEvents.data.map((event) => (
+                                    <EventCardOwner
+                                        event={event}
+                                        key={event.id}
+                                    />
+                                ))
+                            ) : (
+                                <div className="h-36 flex justify-center items-center">
+                                    <h1>
+                                        Crie um evento para ser exibido aqui!
+                                    </h1>
+                                </div>
+                            )}
                         </div>
                         <div className="mt-4 flex justify-center">
                             <Link
@@ -106,9 +117,17 @@ export default function UserEvents({
                     </h2>
                     <div className="bg-gray-300 h-96 w-11/12 rounded-2xl mt-1 mb-4 flex flex-col justify-center">
                         <div className="flex flex-wrap gap-8 justify-center">
-                            {participatingEvents.data.map((event) => (
-                                <EventCard event={event} key={event.id} />
-                            ))}
+                            {participatingEvents.data.length ? (
+                                participatingEvents.data.map((event) => (
+                                    <EventCard event={event} key={event.id} />
+                                ))
+                            ) : (
+                                <div className="h-36 flex justify-center items-center">
+                                    <h1>
+                                        Entre em um evento para ser exibido aqui!
+                                    </h1>
+                                </div>
+                            )}
                         </div>
                         <div className="mt-4 flex justify-center">
                             <Link

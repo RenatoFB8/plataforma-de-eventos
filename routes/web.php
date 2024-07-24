@@ -25,10 +25,10 @@ Route::middleware('auth')->group(function () {
     Route::post('event', [EventController::class, 'store'])->name('event.store');
     Route::get('event/{event}/edit', [EventController::class, 'edit'])->name('event.edit');
     Route::delete('event/{event}', [EventController::class, 'destroy'])->name('event.destroy');
+    Route::get('event/{event}', [EventController::class, 'show'])->name('event.show');
 });
 
 // Rotas de eventos sem autenticação
-Route::get('event/{event}', [EventController::class, 'show'])->name('event.show');
 Route::get('/', [EventController::class, 'index'])->name('event.index');
 
 // Outras rotas
