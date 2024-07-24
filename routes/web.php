@@ -21,9 +21,9 @@ use Inertia\Inertia;
 // Rotas de eventos com autenticação
 Route::middleware('auth')->group(function () {
     Route::get('event/create', [EventController::class, 'create'])->name('event.create');
+    Route::put('event/{event}', [EventController::class, 'update'])->name('event.update');
     Route::post('event', [EventController::class, 'store'])->name('event.store');
     Route::get('event/{event}/edit', [EventController::class, 'edit'])->name('event.edit');
-    Route::put('event/{event}', [EventController::class, 'update'])->name('event.update');
     Route::delete('event/{event}', [EventController::class, 'destroy'])->name('event.destroy');
 });
 
@@ -43,5 +43,9 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::post('/events/{event}/participate', [EventParticipationController::class, 'participate'])->name('events.participate');
+
+Route::get('/user-events', [EventController::class, 'userEvents'])
+    ->name('user.events')
+    ->middleware('auth');
 
 require __DIR__ . '/auth.php';
