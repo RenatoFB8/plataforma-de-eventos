@@ -5,6 +5,7 @@ import TextInput from "@/Components/TextInput";
 import InputError from "@/Components/InputError";
 import PrimaryButton from "@/Components/PrimaryButton";
 import axios from "axios";
+import ImageIcon from "@/Components/Icons/Image";
 
 interface CreateEventFormData {
     title: string;
@@ -120,13 +121,16 @@ const CreateEventForm: React.FC = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="mt-6 space-y-6">
+        <form
+            onSubmit={handleSubmit}
+            className="mt-6 px-8 pb-6 rounded-lg space-y-6"
+        >
             <div>
                 <InputLabel htmlFor="title" value="Título" />
                 <TextInput
                     id="title"
                     type="text"
-                    className="mt-1 block w-full"
+                    className="mt-1 block w-3/5"
                     value={data.title}
                     onChange={(e) => setData("title", e.target.value)}
                 />
@@ -137,7 +141,7 @@ const CreateEventForm: React.FC = () => {
                 <InputLabel htmlFor="description" value="Descrição" />
                 <textarea
                     id="description"
-                    className="mt-1 block w-full"
+                    className="mt-1 block w-3/5"
                     value={data.description}
                     onChange={(e) => setData("description", e.target.value)}
                 />
@@ -149,7 +153,7 @@ const CreateEventForm: React.FC = () => {
                 <TextInput
                     id="start_date"
                     type="datetime-local"
-                    className="mt-1 block w-full"
+                    className="mt-1 block w-3/5"
                     value={data.start_date}
                     onChange={(e) => setData("start_date", e.target.value)}
                 />
@@ -161,7 +165,7 @@ const CreateEventForm: React.FC = () => {
                 <TextInput
                     id="end_date"
                     type="datetime-local"
-                    className="mt-1 block w-full"
+                    className="mt-1 block w-3/5"
                     value={data.end_date}
                     onChange={(e) => setData("end_date", e.target.value)}
                 />
@@ -176,7 +180,7 @@ const CreateEventForm: React.FC = () => {
                 <TextInput
                     id="max_participants"
                     type="number"
-                    className="mt-1 block w-full"
+                    className="mt-1 block w-3/5"
                     value={data.max_participants}
                     onChange={(e) =>
                         setData("max_participants", e.target.value)
@@ -194,62 +198,106 @@ const CreateEventForm: React.FC = () => {
                     id="entry_price"
                     type="number"
                     step="0.01"
-                    className="mt-1 block w-full"
+                    className="mt-1 block w-3/5"
                     value={data.entry_price}
                     onChange={(e) => setData("entry_price", e.target.value)}
                 />
                 <InputError message={errors.entry_price} className="mt-2" />
             </div>
 
-            <div>
-                <InputLabel htmlFor="main_image" value="Imagem Principal" />
-                <TextInput
-                    id="main_image"
-                    type="file"
-                    accept="image/*"
-                    className="mt-1 block w-full"
-                    onChange={handleMainImageChange}
-                    disabled={data.main_image !== null}
-                />
-                {mainImagePreview && (
-                    <img
-                        src={mainImagePreview}
-                        alt="Main Preview"
-                        className="mt-2 h-24 w-24 object-cover cursor-pointer"
-                        onClick={handleRemoveMainImage}
+            <div className="flex">
+                <div>
+                    <InputLabel
+                        htmlFor="main_image"
+                        value={`Imagens Principal (${
+                            mainImagePreview ? 1 : 0
+                        }/1)`}
                     />
-                )}
-                <InputError message={errors.main_image} className="mt-2" />
+                    <TextInput
+                        id="main_image"
+                        type="file"
+                        accept="image/*"
+                        className="mt-1 block w-3/5"
+                        onChange={handleMainImageChange}
+                        disabled={data.main_image !== null}
+                    />
+                    <InputError
+                        message={errors.main_image}
+                        className="mt-2 w-9/12"
+                    />
+                </div>
+                <div>
+                    <h1>
+                        Previa da imagem{" "}
+                        {mainImagePreview && "(Clique para remover)"}
+                    </h1>
+                    {mainImagePreview ? (
+                        <img
+                            src={mainImagePreview}
+                            alt="Main Preview"
+                            className="mt-2 size-48 object-cover cursor-pointer"
+                            onClick={handleRemoveMainImage}
+                        />
+                    ) : (
+                        <div className="mt-2 size-48 border border-dashed border-black flex flex-col justify-center items-center bg-gray-200">
+                            <ImageIcon className="w-12" />
+                            Envie uma imagem
+                        </div>
+                    )}
+                </div>
             </div>
 
-            <div>
-                <InputLabel
-                    htmlFor="location_images"
-                    value="Imagens do Local"
-                />
-                <TextInput
-                    id="location_images"
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    className="mt-1 block w-full"
-                    onChange={handleLocationImagesChange}
-                    disabled={
-                        data.location_images.length >= MAX_LOCATION_IMAGES
-                    }
-                />
-                <div className="mt-2 flex space-x-2">
-                    {locationImagePreviews.map((src, index) => (
-                        <img
-                            key={index}
-                            src={src}
-                            alt={`Location Preview ${index + 1}`}
-                            className="h-24 w-24 object-cover cursor-pointer"
-                            onClick={() => handleRemoveLocationImage(index)}
-                        />
-                    ))}
+            <div className="flex">
+                <div>
+                    <InputLabel
+                        htmlFor="location_images"
+                        value={`Imagens do Local (${locationImagePreviews.length}/${MAX_LOCATION_IMAGES})`}
+                    />
+                    <TextInput
+                        id="location_images"
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        className="mt-1 block w-3/5"
+                        onChange={handleLocationImagesChange}
+                        disabled={
+                            data.location_images.length >= MAX_LOCATION_IMAGES
+                        }
+                    />
+                    <InputError
+                        message={errors.location_images}
+                        className="mt-2 w-9/12"
+                    />
                 </div>
-                <InputError message={errors.location_images} className="mt-2" />
+                <div className="mt-2 flex flex-col">
+                    <h1>
+                        Previa das imagens{" "}
+                        {locationImagePreviews.length > 0 &&
+                            "(Clique para remover)"}
+                    </h1>
+                    <div className="flex gap-2">
+                        {locationImagePreviews.length ? (
+                            locationImagePreviews.map((src, index) => (
+                                <img
+                                    key={index}
+                                    src={src}
+                                    alt={`Location Preview ${index + 1}`}
+                                    className="size-24 object-cover cursor-pointer"
+                                    onClick={() =>
+                                        handleRemoveLocationImage(index)
+                                    }
+                                />
+                            ))
+                        ) : (
+                            <div className="mt-2 size-24 border border-dashed border-black flex flex-col justify-center items-center bg-gray-200">
+                                <ImageIcon className="w-8" />
+                                <span className="text-[0.6rem]">
+                                    Envie uma imagem
+                                </span>
+                            </div>
+                        )}
+                    </div>
+                </div>
             </div>
 
             <div>
@@ -257,7 +305,7 @@ const CreateEventForm: React.FC = () => {
                 <TextInput
                     id="cep"
                     type="text"
-                    className="mt-1 block w-full"
+                    className="mt-1 block w-3/5"
                     value={data.cep}
                     onChange={handleCepChange}
                 />
@@ -269,7 +317,7 @@ const CreateEventForm: React.FC = () => {
                 <TextInput
                     id="street"
                     type="text"
-                    className="mt-1 block w-full"
+                    className="mt-1 block w-3/5"
                     value={data.street}
                     onChange={(e) => setData("street", e.target.value)}
                 />
@@ -281,7 +329,7 @@ const CreateEventForm: React.FC = () => {
                 <TextInput
                     id="street_number"
                     type="text"
-                    className="mt-1 block w-full"
+                    className="mt-1 block w-3/5"
                     value={data.street_number}
                     onChange={(e) => setData("street_number", e.target.value)}
                 />
@@ -293,7 +341,7 @@ const CreateEventForm: React.FC = () => {
                 <TextInput
                     id="neighborhood"
                     type="text"
-                    className="mt-1 block w-full"
+                    className="mt-1 block w-3/5"
                     value={data.neighborhood}
                     onChange={(e) => setData("neighborhood", e.target.value)}
                 />
@@ -305,7 +353,7 @@ const CreateEventForm: React.FC = () => {
                 <TextInput
                     id="city"
                     type="text"
-                    className="mt-1 block w-full"
+                    className="mt-1 block w-3/5"
                     value={data.city}
                     onChange={(e) => setData("city", e.target.value)}
                 />
@@ -317,7 +365,7 @@ const CreateEventForm: React.FC = () => {
                 <TextInput
                     id="state"
                     type="text"
-                    className="mt-1 block w-full"
+                    className="mt-1 block w-3/5"
                     value={data.state}
                     onChange={(e) => setData("state", e.target.value)}
                 />

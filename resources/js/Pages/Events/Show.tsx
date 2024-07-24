@@ -4,6 +4,7 @@ import MapPin from "@/Components/Icons/MapPin";
 import PrimaryButton from "@/Components/PrimaryButton";
 import Modal from "@/Components/Modal";
 import { useState, useEffect } from "react";
+import Authenticated from "@/Layouts/AuthenticatedLayout";
 
 interface ShowProps {
     auth: any;
@@ -84,32 +85,10 @@ export default function Show({ auth, event }: ShowProps) {
     const isParticipatingDisabled = event.max_participants <= event.users_count;
 
     return (
-        <>
+        <Authenticated user={auth.user}>
             <Head title="Evento" />
             <div>
-                <div className="flex justify-between p-3 w-full">
-                    <div className="ml-6">
-                        <Link
-                            href={route("event.index")}
-                            className="font-aclonica text-4xl"
-                        >
-                            Laravent
-                        </Link>
-                    </div>
-                    <div className="mr-6 flex items-center gap-4">
-                        {auth.user ? (
-                            <Link href={route("dashboard")}>Dashboard</Link>
-                        ) : (
-                            <>
-                                <Link href={route("login")}>Entrar</Link>
-                                <Link href={route("register")}>
-                                    Cadastre-se
-                                </Link>
-                            </>
-                        )}
-                    </div>
-                </div>
-                <section className="flex flex-col items-center pt-4 w-full">
+                <section className="flex flex-col items-center w-full">
                     {feedbackMessage && (
                         <div
                             className={`p-4 rounded mb-4 fixed top-2 ${
@@ -131,18 +110,18 @@ export default function Show({ auth, event }: ShowProps) {
 
                     <div className="flex justify-between w-4/5 mt-8">
                         <div>
-                            <div className="mb-1  pl-4 py-1">
+                            <div className="mb-1  py-1">
                                 <h1 className="font-semibold text-2xl">
                                     {event.title}
                                 </h1>
                             </div>
-                            <div className="flex items-center gap-1 pl-4">
+                            <div className="flex items-center gap-1">
                                 <Clock className="w-6" />
                                 <p>
                                     {formattedStartDate} até {formattedEndDate}
                                 </p>
                             </div>
-                            <div className="flex items-center gap-1 pl-4">
+                            <div className="flex items-center gap-1">
                                 <MapPin className="w-6" />
                                 <p>
                                     {event.location.street},{" "}
@@ -151,7 +130,7 @@ export default function Show({ auth, event }: ShowProps) {
                                     {event.location.state}
                                 </p>
                             </div>
-                            <div className="mb-1  pl-4 py-1">
+                            <div className="mb-1  py-1">
                                 <h1 className="font-semibold text-xl">
                                     Descrição do evento
                                 </h1>
@@ -197,6 +176,9 @@ export default function Show({ auth, event }: ShowProps) {
                         </div>
                     </div>
 
+                    <h1 className="font-semibold text-xl w-4/5 text-left">
+                        Imagens do local do evento
+                    </h1>
                     <div className="bg-gray-300 w-4/5 p-8 mb-4 flex flex-wrap gap-8 justify-center rounded-lg">
                         {event.location_images.map((image, index) => (
                             <img
@@ -231,6 +213,6 @@ export default function Show({ auth, event }: ShowProps) {
                     </div>
                 </Modal>
             </div>
-        </>
+        </Authenticated>
     );
 }

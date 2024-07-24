@@ -2,6 +2,7 @@ import { Link, Head } from "@inertiajs/react";
 import EventCard from "@/Components/EventCard";
 import EventCardOwner from "@/Components/EventCardOwner";
 import { useState } from "react";
+import Authenticated from "@/Layouts/AuthenticatedLayout";
 
 interface PaginatedEvents {
     data: {
@@ -48,31 +49,9 @@ export default function UserEvents({
     };
 
     return (
-        <>
+        <Authenticated user={auth.user}>
             <Head title="My Events" />
             <div>
-                <div className="flex justify-between p-3">
-                    <div className="ml-6">
-                        <Link
-                            href={route("dashboard")}
-                            className="font-aclonica text-4xl"
-                        >
-                            Laravent
-                        </Link>
-                    </div>
-                    <div className="mr-6 flex items-center gap-4">
-                        {auth.user ? (
-                            <Link href={route("dashboard")}>Dashboard</Link>
-                        ) : (
-                            <>
-                                <Link href={route("login")}>Entrar</Link>
-                                <Link href={route("register")}>
-                                    Cadastre-se
-                                </Link>
-                            </>
-                        )}
-                    </div>
-                </div>
                 <div className="flex flex-col items-center pt-4">
                     <h1 className="font-actor text-3xl m-4 w-11/12 text-left">
                         Eventos Criados
@@ -175,6 +154,6 @@ export default function UserEvents({
                     </div>
                 </div>
             </div>
-        </>
+        </Authenticated>
     );
 }
