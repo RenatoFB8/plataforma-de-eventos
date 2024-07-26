@@ -2,7 +2,7 @@ import { Link, Head } from "@inertiajs/react";
 import EventCard from "@/Components/EventCard";
 import EventCardOwner from "@/Components/EventCardOwner";
 import { useState } from "react";
-import Authenticated from "@/Layouts/AuthenticatedLayout";
+import HeaderLayout from "@/Layouts/HeaderLayout";
 
 interface PaginatedEvents {
     data: {
@@ -49,7 +49,7 @@ export default function UserEvents({
     };
 
     return (
-        <Authenticated user={auth.user}>
+        <HeaderLayout user={auth.user}>
             <Head title="My Events" />
             <div>
                 <div className="flex flex-col items-center pt-4">
@@ -173,6 +173,6 @@ export default function UserEvents({
                     </div>
                 </div>
             </div>
-        </Authenticated>
+        </HeaderLayout>
     );
 }

@@ -7,7 +7,7 @@ import DashiconsAirplane from "@/Components/Icons/plane";
 import GameIconsCarousel from "@/Components/Icons/carousel";
 import EventCard from "@/Components/EventCard";
 import { useState } from "react";
-import Authenticated from "@/Layouts/AuthenticatedLayout";
+import HeaderLayout from "@/Layouts/HeaderLayout";
 
 interface PaginatedEvents {
     data: {
@@ -37,7 +37,7 @@ export default function Welcome({ auth, events }: WelcomeProps) {
     };
 
     return (
-        <Authenticated user={auth.user}>
+        <HeaderLayout user={auth.user}>
             <Head title="Welcome" />
             <div>
                 <div className="flex flex-col items-center pt-4">
@@ -145,6 +145,6 @@ export default function Welcome({ auth, events }: WelcomeProps) {
                     </div>
                 </div>
             </div>
-        </Authenticated>
+        </HeaderLayout>
     );
 }

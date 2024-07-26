@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,5 +45,10 @@ Route::post('/events/{event}/participate', [EventParticipationController::class,
 Route::get('/user-events', [EventController::class, 'userEvents'])
     ->name('user.events')
     ->middleware('auth');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/notifications', [NotificationController::class, 'getNotifications']);
+    Route::post('/notifications/mark-as-read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
+});
 
 require __DIR__ . '/auth.php';
