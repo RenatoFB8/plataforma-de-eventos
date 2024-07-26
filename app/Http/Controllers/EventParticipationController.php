@@ -3,18 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Carbon\Carbon; // Importando a classe Carbon para manipulação de datas
+use App\Notifications\NewRegistrationNotification;
 
 class EventParticipationController extends Controller
 {
     public function participate(Event $event)
     {
         $user = Auth::user();
+
+        if (!($user instanceof User)) {
+            throw new \Exception('User is not authenticated or is not of the expected type.');
+        }
 
         // Verifica se o usuário já está participando do evento
         if ($event->users()->where('user_id', $user->id)->exists()) {
@@ -40,5 +46,8 @@ class EventParticipationController extends Controller
         // Anexa o usuário ao evento e incrementa o contador de participantes
         $event->users()->attach($user);
         $event->increment('users_count');
+
+        $eventOwner = User::find($event->user_id);
+        $eventOwner->notify(new NewRegistrationNotification($event, $user));
     }
 }

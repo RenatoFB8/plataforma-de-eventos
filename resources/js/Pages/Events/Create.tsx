@@ -1,11 +1,11 @@
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import HeaderLayout from "@/Layouts/HeaderLayout";
 import { Head } from "@inertiajs/react";
 import { PageProps } from "@/types";
 import CreateEventForm from "./Partials/CreateEventForm";
 
 export default function Create({ auth }: PageProps) {
     return (
-        <AuthenticatedLayout
+        <HeaderLayout
             user={auth.user}
         >
             <Head title="Criar Evento" />
@@ -17,6 +17,6 @@ export default function Create({ auth }: PageProps) {
                     </div>
                 </div>
             </div>
-        </AuthenticatedLayout>
+        </HeaderLayout>
     );
 }

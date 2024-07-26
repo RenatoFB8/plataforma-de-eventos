@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
+use App\Notifications\EventUpdatedNotification;
 
 
 class EventController extends Controller
@@ -158,6 +159,11 @@ class EventController extends Controller
             'main_image' => $mainImagePath,
             'location_images' => $locationImagesPaths,
         ]);
+
+        $participants = $event->users;
+        foreach ($participants as $participant) {
+            $participant->notify(new EventUpdatedNotification($event));
+        }
 
         return redirect()->route('event.index');
     }

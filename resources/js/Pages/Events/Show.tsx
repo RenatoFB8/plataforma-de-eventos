@@ -4,7 +4,7 @@ import MapPin from "@/Components/Icons/MapPin";
 import PrimaryButton from "@/Components/PrimaryButton";
 import Modal from "@/Components/Modal";
 import { useState, useEffect } from "react";
-import Authenticated from "@/Layouts/AuthenticatedLayout";
+import HeaderLayout from "@/Layouts/HeaderLayout";
 
 interface ShowProps {
     auth: any;
@@ -85,7 +85,7 @@ export default function Show({ auth, event }: ShowProps) {
     const isParticipatingDisabled = event.max_participants <= event.users_count;
 
     return (
-        <Authenticated user={auth.user}>
+        <HeaderLayout user={auth.user}>
             <Head title="Evento" />
             <div>
                 <section className="flex flex-col items-center w-full">
@@ -213,6 +213,6 @@ export default function Show({ auth, event }: ShowProps) {
                     </div>
                 </Modal>
             </div>
-        </Authenticated>
+        </HeaderLayout>
     );
 }
